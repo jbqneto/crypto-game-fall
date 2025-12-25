@@ -32,7 +32,7 @@ function connectorIcon(c: Connector) {
 }
 
 export default function ConnectWalletModal({ open, onClose }: Props) {
-  const { connectors, connect, isPending } = useConnect();
+  const { connectors, connect } = useConnect();
 
   // filtra e ordena do jeito que você quer
   const filtered = useMemo(() => {

@@ -131,7 +131,6 @@ export function GameCanvas(props: Props) {
 
           const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
           const cssW = canvas.width / dpr;
-          const cssH = canvas.height / dpr;
 
           const size = randomBetween(54, 88);
           const x = randomBetween(size / 2 + 12, cssW - size / 2 - 12);
@@ -380,7 +379,8 @@ export function GameCanvas(props: Props) {
 
     function onClick(ev: MouseEvent) {
       if (props.status !== "RUNNING") return;
-      if (props.timeLeftSec <= 0) return;
+
+      if (!canvas || props.timeLeftSec <= 0) return;
 
       const rect = canvas.getBoundingClientRect();
       const px = ev.clientX - rect.left;
