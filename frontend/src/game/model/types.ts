@@ -32,3 +32,18 @@ export type RuntimeState = {
   lastFrameAt: number;
   spawnTickerMs: number;
 };
+
+export type Player = {
+  id: string;          // address
+  nickname: string;
+  isHost: boolean;
+  joinedAt: number;
+};
+
+export type Room = {
+  id: string;
+  createdAt: number;
+  hostAddress: string;
+  players: Player[];   // max 4
+  status: "LOBBY" | "STARTING" | "IN_GAME" | "ENDED";
+};

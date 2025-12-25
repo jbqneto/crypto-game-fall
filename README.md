@@ -6,6 +6,23 @@ This project was intentionally designed to allow backend and real-time logic to 
 
 ---
 
+## 🖥️ Development
+
+Back-end: Java + Springboot + Websocket
+Front-end: React + Crypto wallet connect on EVM (wagmi + viem)
+
+The idea of this project is to play arround a little bit with game development aside with crypto, with
+the main focus on the backend and real time communication, while the front-end will done in pair programming
+with Chat-GPT to make things faster for me and because I lack experience on the front-end.
+
+v1 - Something playable on the front-end
+v2 - Front-end + backend with basic features
+v3 - backend features improvement
+v4 - front-end improvement
+v5 - front-end code refactor (right now is basically GPT code with some review from my side)
+
+---
+
 ## 🕹️ Game Concept
 
 CryptoFall Arena is a **competitive click game** where items fall from the top of the screen and the player must click them before they hit the ground.
