@@ -1,0 +1,132 @@
+.hud {
+  width: min(980px, 96vw);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(20, 26, 40, 0.78);
+  border: 1px solid rgba(110, 140, 255, 0.18);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.hud-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 240px;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, rgba(140, 170, 255, 0.9), rgba(60, 90, 190, 0.45));
+  border: 1px solid rgba(140, 170, 255, 0.25);
+}
+
+.nick {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.nick span:first-child {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.nick span:last-child {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.hud-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.pill {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(35, 44, 70, 0.7);
+  border: 1px solid rgba(140, 170, 255, 0.22);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.pill label {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.pill strong {
+  font-size: 18px;
+  letter-spacing: 0.4px;
+}
+
+.hud-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 240px;
+  justify-content: flex-end;
+}
+
+.stat {
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(35, 44, 70, 0.55);
+  border: 1px solid rgba(140, 170, 255, 0.16);
+}
+
+.stat label {
+  font-size: 11px;
+  opacity: 0.75;
+  display: block;
+}
+
+.stat strong {
+  font-size: 16px;
+}
+
+.btn {
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(140, 170, 255, 0.22);
+  background: rgba(45, 60, 110, 0.75);
+  color: white;
+  font-weight: 700;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 520px) {
+  .hud {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .hud-left, .hud-right {
+    min-width: unset;
+    justify-content: space-between;
+  }
+
+  .hud-center {
+    justify-content: flex-start;
+  }
+
+  .pill {
+    justify-content: space-between;
+    width: 100%;
+  }
+}
