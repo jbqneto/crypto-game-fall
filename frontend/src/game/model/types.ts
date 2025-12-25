@@ -34,10 +34,11 @@ export type RuntimeState = {
 };
 
 export type Player = {
-  id: string;          // address
+  id: string;
   nickname: string;
   isHost: boolean;
-  joinedAt: number;
+  joinedAt?: number;
+  score: number;
 };
 
 export type Room = {

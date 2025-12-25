@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useConnection } from "wagmi";
+import CreateRoomModal from "../game/components/rooms/CreateRoomModal";
+import { RoomService } from "../game/service/roomService";
 
 type SingleConfig = {
   nickname: string;
@@ -33,15 +35,33 @@ export default function Home() {
 
   const [nickname, setNickname] = useState(initial.nickname);
   const [durationSec, setDurationSec] = useState(initial.durationSec);
-  const { isConnected } = useConnection();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isConnected, address } = useConnection();
 
-  const canStart = nickname.trim().length >= 2 && isConnected;
+  const canStartSingle = nickname.trim().length >= 2;
+  const canStartMulti = canStartSingle && isConnected;
 
   const startSingle = () => {
     const cfg = { nickname: nickname.trim(), durationSec };
     saveConfig(cfg);
     nav("/single");
   };
+
+  function setOpenModal(active: boolean): void {
+    setIsModalOpen(active);
+  }
+
+  async function handleCreateRoom(payload: { roomName: string; isOpen: boolean; }): Promise<void> {
+    if (!address) return;
+
+    const room = await RoomService.createRoom({
+      owner: address,
+      roomName: payload.roomName,
+      isOpen: payload.isOpen,
+    });
+
+    nav(`/room/${room.id}`);
+  }
 
   return (
     <div
@@ -123,14 +143,14 @@ export default function Home() {
 
               <button
                 onClick={startSingle}
-                disabled={!canStart}
+                disabled={!canStartSingle}
                 style={{
                   marginTop: 8,
-                  cursor: canStart ? "pointer" : "not-allowed",
+                  cursor: canStartSingle ? "pointer" : "not-allowed",
                   padding: "12px 12px",
                   borderRadius: 14,
                   border: "1px solid rgba(140,170,255,0.22)",
-                  background: canStart ? "rgba(70, 95, 190, 0.9)" : "rgba(70, 95, 190, 0.35)",
+                  background: canStartSingle ? "rgba(70, 95, 190, 0.9)" : "rgba(70, 95, 190, 0.35)",
                   color: "white",
                   fontWeight: 900,
                 }}
@@ -175,7 +195,8 @@ export default function Home() {
 
               <div style={{ display: "flex", gap: 8 }}>
                 <button
-                  disabled
+                  disabled={!canStartMulti}
+                  onClick={() => setOpenModal(true)}
                   style={{
                     flex: 1,
                     padding: "12px 12px",
@@ -190,7 +211,7 @@ export default function Home() {
                 </button>
 
                 <button
-                  disabled
+                  disabled={!canStartMulti}
                   style={{
                     flex: 1,
                     padding: "12px 12px",
@@ -206,16 +227,21 @@ export default function Home() {
               </div>
 
               <div style={{ opacity: 0.65, fontSize: 12, lineHeight: 1.45 }}>
-                Depois você pluga backend + rooms reais + wallet login. UI já vai estar pronta.
+                Play with others, earn crypto rewards. Coming soon!
               </div>
             </div>
           </div>
         </div>
 
         <footer style={{ opacity: 0.65, fontSize: 12 }}>
-          Dica: no single player você valida animação, hitbox e UX sem travar no multiplayer.
+          Built by jbqneto.{" "}
         </footer>
       </div>
+      <CreateRoomModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onCreate={handleCreateRoom}
+      />
     </div>
   );
 }

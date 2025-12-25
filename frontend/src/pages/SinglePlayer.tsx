@@ -55,6 +55,7 @@ export default function SinglePlayer() {
 
   const restart = () => {
     setScore(0);
+    setTimeLeftSec(cfg.durationSec);
     setStatus("RUNNING");
   };
 

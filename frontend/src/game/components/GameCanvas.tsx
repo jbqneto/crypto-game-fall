@@ -19,6 +19,8 @@ type Props = {
   bombImg: HTMLImageElement | null;
 };
 
+const DEAD_ZONE_PX = 30; // distância do chão
+
 function randomBetween(min: number, max: number): number {
   return Math.random() * (max - min) + min;
 }
@@ -56,7 +58,7 @@ export function GameCanvas(props: Props) {
     return {
       width: 980,
       height: 540,
-      floorPad: 46, // “chão” visual
+      floorPad: 46, // "ground"
     };
   }, []);
 
@@ -70,7 +72,7 @@ export function GameCanvas(props: Props) {
     stateRef.current.texts = [];
   }, [props.status]);
 
-  // resize + DPR (canvas nítido)
+  // resize + DPR (canvas)
   useEffect(() => {
     const canvas = canvasRef.current;
     
@@ -78,7 +80,7 @@ export function GameCanvas(props: Props) {
 
     function resize() {
       const maxW = Math.min(arena.width, Math.floor(window.innerWidth * 0.96));
-      const maxH = Math.floor(window.innerHeight * 0.62); // segura HUD + espaço
+      const maxH = Math.floor(window.innerHeight * 0.62); // HUD + space
       const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
 
       if (!canvas) return;
@@ -233,17 +235,19 @@ export function GameCanvas(props: Props) {
       const yEnd = floorY - item.size / 2 - 4;
       const y = lerp(yStart, yEnd, p);
 
-      // se chegou ao chão sem clique, some
-      if (t >= 1) continue;
+      const bottomY = y + item.size / 2;
+
+      if (bottomY >= floorY - DEAD_ZONE_PX) {
+        continue;
+      }
 
       drawItem(ctx, item, y);
 
-      // mantém item
       nextItems.push(item);
     }
     st.items = nextItems;
 
-    // overlay vermelho (bomba)
+    // red overlay (bomb)
     if (st.overlayRedAlpha > 0) {
       ctx.save();
       ctx.globalAlpha = st.overlayRedAlpha * 0.42;
@@ -406,8 +410,13 @@ export function GameCanvas(props: Props) {
         const yStart = -item.size;
         const yEnd = floorY - item.size / 2 - 4;
         const y = lerp(yStart, yEnd, p);
+        const bottomY = y + item.size / 2;
 
-        const r = item.size * 0.45; // hitbox circular precisa o suficiente p/ ícones redondos
+        if (bottomY >= floorY - DEAD_ZONE_PX) {
+          continue;
+        }
+
+        const r = item.size * 0.6; // circular hitbox 
 
         if (hitTestCircle(px, py, item.x, y, r)) {
           item.clicked = true;
